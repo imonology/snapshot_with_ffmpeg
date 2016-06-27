@@ -50,7 +50,7 @@ var snapshotrrr = function snapshot () {
 	});
 
 	try {
-		this.ffmpeg_snapshot = child_process.spawn('ffmpeg', [
+		this.ffmpeg_snapshot = child_process.spawn('/usr/local/bin/ffmpeg', [
 			'-y',
 			'-loglevel', 'fatal',
 			'-codec', 'h264_mmal',
