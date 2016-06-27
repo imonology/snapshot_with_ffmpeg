@@ -22,5 +22,5 @@ sudo apt -y install ttf-wqy-microhei
 sudo cp /home/pi/snapshot_with_ffmpeg/snapshot.sh /opt/
 
 echo "Type sudo crontab -e and add entries like this:"
-echo "@reboot sleep 5; /usr/bin/screen -dmS snapshot bash -c 'sudo ~/snapshot_with_ffmpeg; exec bash'"
+echo "@reboot sleep 15; /usr/bin/screen -dmS snapshot bash -c 'sudo ~/snapshot_with_ffmpeg; exec bash'"
 echo "and this will run after rpi has booted"
