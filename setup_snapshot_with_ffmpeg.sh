@@ -22,6 +22,4 @@ sudo apt -y install ttf-wqy-microhei
 sudo cp /home/pi/snapshot_with_ffmpeg/snapshot.sh /opt/
 sudo chmod +x /opt/snapshot.sh
 
-echo "Type sudo crontab -e and add entries like this:"
-echo "@reboot sleep 15; cd /dev/shm && /usr/bin/screen -dmS snapshot bash -c 'sudo /opt/snapshot.sh; exec bash'"
-echo "and this will run after rpi has booted"
+sudo crontab -l | { cat; echo "@reboot sleep 15; cd /dev/shm && /usr/bin/screen -dmS snapshot bash -c 'sudo /opt/snapshot.sh; exec bash'"; } | sudo crontab -
