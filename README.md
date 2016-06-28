@@ -4,7 +4,9 @@ take snapshot on ffmpeg with rpos (https://github.com/BreeeZe/rpos)
 #How to:
 Install:
 
-1. clone this repo
-2. excute ``setup_snapshot_with_ffmpeg.sh``
-3. reboot your machine
-4. enjoy
+    *login to your pi via ssh
+    cd ~
+    wget https://raw.githubusercontent.com/imonology/snapshot_with_ffmpeg/master/setup_snapshot_with_ffmpeg.sh
+    sudo chmod +x setup_snapshot_with_ffmpeg.sh
+    sudo ./setup_snapshot_with_ffmpeg.sh
+    #enjoy
