@@ -18,7 +18,9 @@ var del_old_snapshot = function (filename) {
 }
 
 fs.readdir('./', function (err, files) {
-	if (err) return;
+	if (err) {
+		return;
+	}
 	for (var i in files) {
 		var filename = files[i].slice(0);
 		if (filename.match(/.*png$/i)) {
@@ -35,19 +37,26 @@ function snapshot () {
 snapshot.prototype.init = function () {
 	var self = this;
 
-	var old_snapshot = "";
+	this.old_snapshot = "";
 
 	fs.watch("./", {presistent: true, recursive: true}, function (event, filename) {
-		if (event === 'rename') return;
+		if (event === 'rename') {
+			return;
+		}
+
 		if (filename.match(/.*png$/i)) {
-			if (old_snapshot === "") {
+			self.keepalive();
+			if (self.old_snapshot === "") {
 
-				old_snapshot = (path.resolve('./', filename));
+				self.old_snapshot = (path.resolve('./', filename));
 
-			} else if (old_snapshot !== path.resolve('./', filename)) {
-
-				fs.rename(old_snapshot, "./snapshot.jpg");
-				old_snapshot = path.resolve('./', filename);
+			} else if (self.old_snapshot !== path.resolve('./', filename)) {
+				try {
+					fs.rename(self.old_snapshot, "./snapshot.jpg");
+				} catch (e) {
+					console.log(e);
+				}
+				self.old_snapshot = path.resolve('./', filename);
 
 			}
 		}
@@ -64,26 +73,24 @@ snapshot.prototype.init = function () {
 			'-vf', 'drawtext=fontfile=/usr/share/fonts/truetype/wqy/wqy-microhei.ttc : text=%{localtime\}: fontcolor=yellow@1: x=10: y=10',
 			path.resolve('./', 'snapshot%01d.png')
 		]);
-		self.keepalive();
+		this.keep_rtsp = setInterval(function () {
+			console.log('rtsp is dead, rrrrrrrrrrrrrrrreconnecting ... ');
+			self.reconnect_rtsp();
+		}, 5000);
 	} catch (err) {
 		console.log(err);
 	}
 
-	this.ffmpeg_snapshot.stdout.on('data', function (data) {
-		self.keepalive();
-		console.log('stdout on data event');
-	});
-
 	this.ffmpeg_snapshot.stderr.on('error', function (data) {
-		// console.log(data.toString());
+		console.log(data.toString());
 	});
 
 	this.ffmpeg_snapshot.stderr.on('data', function (data) {
-		// console.log(data.toString());
+		console.log(data.toString());
 	});
 
 	this.ffmpeg_snapshot.on('close', function(code) {
-		// console.log(code);
+		console.log(code);
 	});
 }
 
@@ -100,12 +107,18 @@ snapshot.prototype.keepalive = function () {
 }
 
 snapshot.prototype.reconnect_rtsp = function () {
+	if (typeof(this.keep_rtsp) !== "undefined" || typeof(this.keep_rtsp) !== {}) {
+		clearInterval(this.keep_rtsp);
+		delete this.keep_rtsp;
+	}
 	try {
 		this.ffmpeg_snapshot.kill('SIGHUP');
 	} catch (e) {
-		console.log(e);
-		self.reconnect_rtsp();
-		return;
+		if (e) {
+			console.log(e);
+			self.reconnect_rtsp();
+			return;
+		}
 	}
 	delete this.ffmpeg_snapshot;
 	this.init();
