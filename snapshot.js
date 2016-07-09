@@ -27,7 +27,7 @@ fs.readdir('./', function (err, files) {
 	}
 });
 
-var snapshotrrr = function snapshot () {
+function snapshot () {
 
 	var self = this;
 
@@ -77,4 +77,27 @@ var snapshotrrr = function snapshot () {
 	});
 }
 
-snapshotrrr();
+snapshot.prototype.keepalive = function () {
+	var self = this;
+	if (typeof(this.keep_rtsp) !== "undefined" || typeof(this.keep_rtsp) !== {}) {
+		clearInterval(this.keep_rtsp);
+		delete this.keep_rtsp;
+	}
+	this.keep_rtsp = setInterval(function () {
+		self.reconnect_rtsp();
+	}, 5000);
+}
+
+snapshot.prototype.reconnect_rtsp = function () {
+	try {
+		this.ffmpeg_snapshot.kill('SIGHUP');
+	} catch (e) {
+		console.log(e);
+		self.reconnect_rtsp();
+		return;
+	}
+	delete this.ffmpeg_snapshot;
+	snapshot();
+}
+
+snapshot();
