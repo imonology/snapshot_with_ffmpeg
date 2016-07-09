@@ -28,7 +28,11 @@ fs.readdir('./', function (err, files) {
 });
 
 function snapshot () {
+	this.init();
+	return this;
+};
 
+snapshot.prototype.init = function () {
 	var self = this;
 
 	var old_snapshot = "";
@@ -60,9 +64,15 @@ function snapshot () {
 			'-vf', 'drawtext=fontfile=/usr/share/fonts/truetype/wqy/wqy-microhei.ttc : text=%{localtime\}: fontcolor=yellow@1: x=10: y=10',
 			path.resolve('./', 'snapshot%01d.png')
 		]);
+		self.keepalive();
 	} catch (err) {
-		// console.log(err);
+		console.log(err);
 	}
+
+	this.ffmpeg_snapshot.stdout.on('data', function (data) {
+		self.keepalive();
+		console.log('stdout on data event');
+	});
 
 	this.ffmpeg_snapshot.stderr.on('error', function (data) {
 		// console.log(data.toString());
@@ -84,6 +94,7 @@ snapshot.prototype.keepalive = function () {
 		delete this.keep_rtsp;
 	}
 	this.keep_rtsp = setInterval(function () {
+		console.log('rtsp is dead, rrrrrrrrrrrrrrrreconnecting ... ');
 		self.reconnect_rtsp();
 	}, 5000);
 }
@@ -97,7 +108,7 @@ snapshot.prototype.reconnect_rtsp = function () {
 		return;
 	}
 	delete this.ffmpeg_snapshot;
-	snapshot();
+	this.init();
 }
 
-snapshot();
+var ss = new snapshot();
