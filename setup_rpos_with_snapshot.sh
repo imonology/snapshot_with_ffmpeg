@@ -8,7 +8,7 @@ git clone https://github.com/BreeeZe/rpos.git
 git clone https://github.com/tj/n.git
 
 cd n && sudo make install && cd /home/pi && sudo /usr/local/bin/n lts && sudo /usr/local/bin/npm install tsc -g
-cd rpos && /usr/local/bin/npm install && /usr/local/bin/tsc rpos.ts && sudo chmod +x setup_v4l2rtspserver.sh && ./setup_v4l2rtspserver.sh 
+cd rpos && /usr/local/bin/npm install && /usr/local/bin/tsc rpos.ts && sh /home/pi/rpos/setup_v4l2rtspserver.sh
 
 # note:
 # x264 commit 3f5ed56d4105f68c01b86f94f41bb9bbefa3433b
