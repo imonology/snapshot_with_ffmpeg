@@ -1,4 +1,6 @@
 #!/bin/bash
+sudo apt update
+sudo apt -y install git build-essential vim
 
 cd /home/pi
 git clone https://github.com/sunnyworm/snapshot_with_ffmpeg
