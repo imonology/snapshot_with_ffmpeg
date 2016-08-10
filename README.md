@@ -8,5 +8,5 @@ Install:
     cd ~
     wget https://raw.githubusercontent.com/imonology/snapshot_with_ffmpeg/master/setup_snapshot_with_ffmpeg.sh
     sudo chmod +x setup_snapshot_with_ffmpeg.sh
-    sudo ./setup_snapshot_with_ffmpeg.sh
+    ./setup_snapshot_with_ffmpeg.sh
     #enjoy
