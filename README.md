@@ -6,7 +6,5 @@ Install:
 
     *login to your pi via ssh
     cd ~
-    wget https://raw.githubusercontent.com/imonology/snapshot_with_ffmpeg/master/setup_snapshot_with_ffmpeg.sh
-    sudo chmod +x setup_snapshot_with_ffmpeg.sh
-    ./setup_snapshot_with_ffmpeg.sh
+    curl -L https://raw.githubusercontent.com/imonology/snapshot_with_ffmpeg/master/setup_snapshot_with_ffmpeg.sh | bash
     #enjoy
