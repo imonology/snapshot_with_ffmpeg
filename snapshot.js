@@ -64,13 +64,13 @@ snapshot.prototype.init = function () {
 
 	try {
 		this.ffmpeg_snapshot = child_process.spawn('/usr/local/bin/ffmpeg', [
+			'-rtsp_transport', 'tcp',
 			'-y',
 			'-loglevel', 'fatal',
 			'-codec', 'h264_mmal',
 			'-i', 'rtsp://localhost:8554/h264',
 			'-r', '2',
-			// '-vf', 'fps=1',
-			'-vf', 'drawtext=fontfile=/usr/share/fonts/truetype/wqy/wqy-microhei.ttc : text=%{localtime\}: fontcolor=yellow@1: x=10: y=10',
+			'-vf', 'fps=fps=1, drawtext=fontfile=/usr/share/fonts/truetype/wqy/wqy-microhei.ttc : text=%{localtime\}: fontcolor=yellow@1: x=10: y=10',
 			path.resolve('./', 'snapshot%01d.png')
 		]);
 		this.keep_rtsp = setInterval(function () {
